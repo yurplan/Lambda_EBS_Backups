@@ -11,7 +11,7 @@ import os
 
 # Manually configure EC2 region, account IDs, timezone
 ec = boto3.client('ec2', region_name='us-east-1')
-aws_account_ids = ['123456789012']
+aws_account_ids = ['020662911542']
 default_days_of_renention = 7
 os.environ['TZ'] = 'US/Eastern'
 

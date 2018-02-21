@@ -29,7 +29,7 @@ How to:
 3. Add code to Lambda
 4. Checkout CloudWatch logs to confirm nil errors
 
-EBS Volume tagging example
+EBS Volume tagging example:
 
 ![EBS Volume tagging example](https://github.com/TacMechMonkey/Lambda_EBS_Backups-Python_3-6/blob/master/Tag_Example.GIF)
 

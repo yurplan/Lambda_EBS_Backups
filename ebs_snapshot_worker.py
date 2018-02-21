@@ -50,7 +50,7 @@ def create_snapshot():
     for volume in volumes:
         vol_id = volume['VolumeId']
         vol_retention = RETENTION_DEFAULT
-        snap_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+        snap_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         snap_desc = vol_id
         
         for name in volume['Tags']:

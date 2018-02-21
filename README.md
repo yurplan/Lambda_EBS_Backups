@@ -1,7 +1,6 @@
 # Lambda EBS Snapshot Manager for Python 3.6
 ---
 This is a fork of https://github.com/doximity/lambda-ebs-snapshots
-Modified fork of: https://github.com/Brayyy/Lambda-EBS-Snapshot-Manager
 
 Create a Lambda script to schedule creation and clearing of EBS snapshots.
 

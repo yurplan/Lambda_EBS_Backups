@@ -1,6 +1,5 @@
 # Lambda EBS Snapshot Manager for Python 3.6
 ---
-This is a fork of https://github.com/doximity/lambda-ebs-snapshots
 
 Create a Lambda script to schedule creation and clearing of EBS snapshots.
 
@@ -30,7 +29,7 @@ How to:
 3. Add code to Lambda
 4. Checkout CloudWatch logs to confirm nil errors
 
-![EBS Volume tagging example](/example-tagged-volume.png)
+![EBS Volume tagging example](/Tag example.GIF)
 
 Lambda config:
 - Runtime: Python 3.6

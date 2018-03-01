@@ -1,7 +1,7 @@
 # Lambda EBS Snapshot Manager for Python 3.6
 ---
 
-Create a Lambda script to schedule creation and clearing of EBS snapshots.
+Use Boto3 and Lambda to schedule the creation and clearing of EBS snapshots.
 
 - To tag an EBS volume for backup, add a tag key: "Backup" with a value: how often to snapshot.
 Values for "Backup" key: Hourly, 4/day, Daily, Weekly, No

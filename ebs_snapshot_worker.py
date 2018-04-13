@@ -74,18 +74,18 @@ def create_snapshot():
                 elif tag_val == 'Hourly':
                     backup_mod = 1
                 else:
-                    print("%s unknown backup schedule %s" % (vol_id, tag_val))
+                    print("Unknown backup schedule %s for volume %s" % (tag_val, vol_id))
                     continue
 
-        snap_name = 'Backup of ' + snap_desc
-        snap_desc = 'Lambda backup ' + snap_date + ' of ' + snap_desc
+        if (current_hour + 10) % backup_mod != 0:
+            print("Backup of %s is not scheduled isn't needed" % vol_id)
+            continue
+
+        snap_name = 'Backup of ' + snap_short_desc
+        snap_desc = 'Lambda backup ' + snap_date + ' of ' + snap_short_desc
         delete_ts = '%.0f' % ((vol_retention * 86400) + time.time())
 
-        if backup_mod is False or (current_hour + 10) % backup_mod != 0:
-            print("%s is not scheduled this hour" % vol_id)
-            continue
-        else:
-            print("%s is scheduled this hour" % vol_id)
+        print("Backup of %s needed" % vol_id)
 
         snap = EC2_CLIENT.create_snapshot(
             VolumeId=vol_id,
@@ -122,7 +122,7 @@ def delete_old_backups(aws_account_ids):
                     print("%s is being deleted" % snap['SnapshotId'])
                     EC2_CLIENT.delete_snapshot(SnapshotId=snap['SnapshotId'])
                 else:
-                    print("%s is safe." % snap['SnapshotId'])
+                    print("%s is safe" % snap['SnapshotId'])
 
 
 def lambda_handler(event, context):

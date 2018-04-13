@@ -6,10 +6,11 @@
 # Updated for Python 3.6, added local time to 4/day, added requirement for EBS volume to be 'in-use'
 # https://github.com/TacMechMonkey/Lambda_EBS_Backups-Python_3-6
 
-import boto3
 import datetime
 import time
 import os
+
+import boto3
 
 RETENTION_DEFAULT = 90
 TIME_ZONE = 'Australia/Brisbane'
@@ -33,7 +34,6 @@ os.environ['TZ'] = TIME_ZONE
 
 
 def create_snapshot():
-
     current_hour = int(datetime.datetime.now().strftime('%H'))
 
     volumes = EC2_CLIENT.describe_volumes(
@@ -45,14 +45,14 @@ def create_snapshot():
         'Volumes', []
     )
 
-    print ("Number of volumes with backup tag: %d" % len(volumes))
+    print("Number of volumes with backup tag: %d" % len(volumes))
 
     for volume in volumes:
         vol_id = volume['VolumeId']
         vol_retention = RETENTION_DEFAULT
         snap_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         snap_desc = vol_id
-        
+
         for name in volume['Tags']:
             tag_key = name['Key']
             tag_val = name['Value']
@@ -65,7 +65,7 @@ def create_snapshot():
 
             if tag_key == BACKUP_KEY:
                 backup_mod = False
-                if tag_val == '' or tag_val == 'No' or tag_val == 'false' :
+                if tag_val == '' or tag_val == 'No' or tag_val == 'false':
                     backup_mod = False
                 elif tag_val == 'Weekly':
                     backup_mod = 168
@@ -76,7 +76,7 @@ def create_snapshot():
                 elif tag_val == 'Hourly':
                     backup_mod = 1
                 else:
-                    print ("%s unknown backup schedule %s" % (vol_id, tag_val))
+                    print("%s unknown backup schedule %s" % (vol_id, tag_val))
                     continue
 
         snap_name = 'Backup of ' + snap_desc
@@ -84,17 +84,17 @@ def create_snapshot():
         delete_ts = '%.0f' % ((vol_retention * 86400) + time.time())
 
         if backup_mod is False or (current_hour + 10) % backup_mod != 0:
-            print ("%s is not scheduled this hour" % vol_id)
+            print("%s is not scheduled this hour" % vol_id)
             continue
         else:
-            print ("%s is scheduled this hour" % vol_id)
+            print("%s is scheduled this hour" % vol_id)
 
         snap = EC2_CLIENT.create_snapshot(
             VolumeId=vol_id,
             Description=snap_desc,
         )
 
-        print ("%s created" % snap['SnapshotId'])
+        print("%s created" % snap['SnapshotId'])
 
         EC2_CLIENT.create_tags(
             Resources=[snap['SnapshotId']],
@@ -121,10 +121,10 @@ def delete_old_backups(aws_account_ids):
 
             if tag_key == 'Delete After':
                 if int(tag_val) < time.time():
-                    print ("%s is being deleted" % snap['SnapshotId'])
+                    print("%s is being deleted" % snap['SnapshotId'])
                     EC2_CLIENT.delete_snapshot(SnapshotId=snap['SnapshotId'])
                 else:
-                    print ("%s is safe." % snap['SnapshotId'])
+                    print("%s is safe." % snap['SnapshotId'])
 
 
 def lambda_handler(event, context):

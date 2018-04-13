@@ -132,5 +132,4 @@ def lambda_handler(event, context):
 
     create_snapshot()
     delete_old_backups(aws_account_ids)
-
-return "Successful"
+    return "Successful"

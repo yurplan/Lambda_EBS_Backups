@@ -51,22 +51,20 @@ def create_snapshot():
         vol_id = volume['VolumeId']
         vol_retention = RETENTION_DEFAULT
         snap_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        snap_desc = vol_id
 
         for name in volume['Tags']:
             tag_key = name['Key']
             tag_val = name['Value']
 
             if tag_key == 'Name':
-                snap_desc = vol_id + ' (' + tag_val + ')'
+                snap_short_desc = vol_id + ' (' + tag_val + ')'
 
             if tag_key == RETENTION_KEY and tag_val.isdigit():
                 vol_retention = int(tag_val)
 
             if tag_key == BACKUP_KEY:
-                backup_mod = False
-                if tag_val == '' or tag_val == 'No' or tag_val == 'false':
-                    backup_mod = False
+                if tag_val in ('', 'No', 'false'):
+                    continue
                 elif tag_val == 'Weekly':
                     backup_mod = 168
                 elif tag_val == 'Daily':

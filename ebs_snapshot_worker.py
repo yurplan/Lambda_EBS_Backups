@@ -78,7 +78,7 @@ def create_snapshot():
                     continue
 
         if (current_hour + 10) % backup_mod != 0:
-            print("Backup of %s is not scheduled isn't needed" % vol_id)
+            print("Backup of %s is not scheduled" % vol_id)
             continue
 
         snap_name = 'Backup of ' + snap_short_desc
